@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zomato Hyderabad Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        header h1 {
+            font-size: 26px;
+            font-weight: 500;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        header input {
+            padding: 12px;
+            width: 300px;
+            border-radius: 4px;
+            border: none;
+            font-size: 16px;
+        }
+
+        header .auth-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            background-color: #f0c14b;
+            border-radius: 4px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        
+        /* Group Order Button */
+.group-order-btn {
+    padding: 8px 15px;
+    background-color: #ff5722;
+    border-radius: 4px;
+    font-weight: bold;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.group-order-btn .group-icon {
+    width: 18px; /* Icon size */
+    height: 18px;
+    object-fit: contain; /* Ensures the image fits the button */
+}
+
+        /* Main Content */
+        .content-wrapper {
+            display: flex;
+            padding: 120px 20px 20px;
+        }
+
+        /* Sidebar filters */
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar input {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .sidebar .filter-option {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .sidebar .filter-option input {
+            width: 40px;
+        }
+
+        .sidebar .filter-option label {
+            font-size: 14px;
+        }
+
+        /* Restaurant Cards */
+        .restaurant-list {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .restaurant-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .restaurant-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .restaurant-card .content {
+            padding: 15px;
+        }
+
+        .restaurant-card h3 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .restaurant-card p {
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .restaurant-card .rating {
+            color: #ffb400;
+            margin-top: 10px;
+        }
+
+        .restaurant-card .delivery-time {
+            color: #888;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="https://zomato.com"><img src="icon.png"></a>
+        <input type="text" id="searchBar" placeholder="Search for restaurants or cuisines..."
+            oninput="searchRestaurants()">
+        <div class="auth-btns">
+            <a href="groupOrder.html"><button class="btn">Group Order</button></a>
+            <button class="btn">Login</button>
+            <button class="btn">Sign Up</button>
+        </div>
+        
+    </header>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Sidebar Filters -->
+        <div class="sidebar">
+            <h2>Filters</h2>
+            <input type="text" placeholder="Search Filter...">
+
+            <!-- Cuisines Filter -->
+            <div class="filter-option">
+                <label for="cuisines">Cuisines</label>
+                <select id="cuisines" name="cuisines">
+                    <option value="all">All Cuisines</option>
+                    <option value="indian">Indian</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="italian">Italian</option>
+                </select>
+            </div>
+
+            <!-- Rating Filter -->
+            <div class="filter-option">
+                <label for="rating">Rating</label>
+                <input type="range" id="rating" name="rating" min="1" max="5">
+            </div>
+
+            <!-- Price Filter -->
+            <div class="filter-option">
+                <label for="price">Price</label>
+                <input type="range" id="price" name="price" min="1" max="5">
+            </div>
+        </div>
+        <br><br><br><br><br><br>
+        <!-- Restaurant List -->
+        <div class="restaurant-list" id="restaurantList">
+            <!-- Example Restaurant Cards -->
+            <div class="restaurant-card">
+                <img src="pizza2.avif" alt="Restaurant Image">
+                <div class="content">
+                    <h3>The Food Place</h3>
+                    <p>Italian, Pizza, Pasta</p>
+                    <div class="rating">⭐ 4.5</div>
+                    <div class="delivery-time">Delivery in 30 minutes</div>
+                </div>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="burger2.jpg" alt="Restaurant Image">
+                <div class="content">
+                    <h3>Burger Town</h3>
+                    <p>Burgers, Fast Food</p>
+                    <div class="rating">⭐ 4.2</div>
+                    <div class="delivery-time">Delivery in 25 minutes</div>
+                </div>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="sushi.avif" alt="Restaurant Image">
+                <div class="content">
+                    <h3>Sushi World</h3>
+                    <p>Sushi, Japanese</p>
+                    <div class="rating">⭐ 4.7</div>
+                    <div class="delivery-time">Delivery in 40 minutes</div>
+                </div>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="stree2.cms" alt="Restaurant Image">
+                <div class="content">
+                    <h3>Spicy Street</h3>
+                    <p>Indian, Street Food</p>
+                    <div class="rating">⭐ 4.4</div>
+                    <div class="delivery-time">Delivery in 35 minutes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+     <br><br><br><br><br><br>
+    <footer>
+        <p>© 2025 Zomato</p>
+    </footer>
+
+    <script>
+        // Search functionality
+        function searchRestaurants() {
+            let searchQuery = document.getElementById('searchBar').value.toLowerCase();
+            let restaurantCards = document.querySelectorAll('.restaurant-card');
+
+            restaurantCards.forEach(card => {
+                let name = card.querySelector('h3').textContent.toLowerCase();
+                let cuisine = card.querySelector('p').textContent.toLowerCase();
+
+                if (name.includes(searchQuery) || cuisine.includes(searchQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

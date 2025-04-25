@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Order System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            padding: 25px;
+            border-radius: 12px;
+            background: #fff;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 25px;
+            color: #ff5722;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #ff5722;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 12px 0;
+            padding: 12px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        ul li:hover {
+            background-color: #f1f1f1;
+        }
+
+        ul li button {
+            background-color: #e64a19;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        ul li button:hover {
+            background-color: #ff5722;
+        }
+
+        .btn {
+            padding: 12px;
+            background: #ff5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 12px 0;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #e64a19;
+            transform: translateY(-2px);
+        }
+
+        .modal,
+        .overlay {
+            display: none;
+            position: fixed;
+        }
+
+        .modal {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .overlay {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f1f1f1;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .food-item:hover {
+            background-color: #e1e1e1;
+        }
+
+        .food-item button {
+            background-color: #e64a19;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .food-item button:hover {
+            background-color: #ff5722;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff5722;
+            outline: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            h3 {
+                font-size: 22px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .modal {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>🥗 Your Order</h2>
+
+        <!-- Group Order Link -->
+        <div class="section">
+            <h3>🔗 Share Group Order Link</h3>
+            <input type="text" id="groupOrderLink" value="http://example.com/group-order" readonly>
+            <button class="btn" onclick="copyLink()">Copy Link</button>
+        </div>
+
+        <!-- Group Members Section -->
+        <div class="section">
+            <h3>👥 Group Members</h3>
+            <ul id="memberList">
+                <li>anjali <span>(Admin)</span></li>
+                <li>rohan</li>
+                <li>naksh</li>
+            </ul>
+            <button class="btn" onclick="addMember()">+ Add Member</button>
+            <button class="btn" onclick="showAdminSelection()">Choose Admin</button>
+        </div>
+
+        <!-- Cart Section -->
+        <div class="section">
+            <h3>🛒 Your Cart</h3>
+            <div id="foodItemList"></div>
+            <button class="btn" onclick="addItem()">+ Add Item</button>
+        </div>
+
+        <!-- Bill and Discount Section -->
+        <div class="section">
+            <h3>💰 Split Payment & Discount</h3>
+            <p>Total Bill: ₹<span id="totalBill">0</span></p>
+            <p>Group Discount: <span id="discount">0%</span></p>
+        </div>
+
+        <button class="btn" onclick="showPaymentModal()">🚀 Place Order</button>
+    </div>
+
+    <!-- Overlay and Modal for Payment -->
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="paymentModal">
+        <h3>Select Payment Method</h3>
+        <button class="btn" onclick="selectPayment('COD')">Cash on Delivery</button>
+        <button class="btn" onclick="selectPayment('Online')">Online Payment</button>
+        <h3>Select Delivery Option</h3>
+        <button class="btn" onclick="chooseDelivery('Standard')">Standard Delivery</button>
+        <button class="btn" onclick="chooseDelivery('Express')">Express Delivery (Extra Charges Apply)</button>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div class="modal" id="orderSuccess">
+        <h3>✅ Order Placed Successfully!</h3>
+    </div>
+
+    <!-- Admin Selection Modal -->
+    <div class="modal" id="adminSelectionModal">
+        <h3>Select New Admin</h3>
+        <ul id="adminSelectionList"></ul>
+        <button class="btn" onclick="closeAdminSelection()">Cancel</button>
+    </div>
+
+    <script>
+        // Function to copy the group order link
+        function copyLink() {
+            let linkField = document.getElementById("groupOrderLink");
+            linkField.select();
+            linkField.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+            alert("Group order link copied to clipboard!");
+        }
+
+        // Function to add a new member
+        function addMember() {
+            let memberName = prompt("Enter member name:");
+            if (memberName) {
+                let list = document.getElementById("memberList");
+                let newMember = document.createElement("li");
+                newMember.innerText = memberName;
+                list.appendChild(newMember);
+                updateBill();
+            }
+        }
+
+        // Function to display admin selection modal
+        function showAdminSelection() {
+            let members = document.querySelectorAll('#memberList li');
+            let adminList = document.getElementById('adminSelectionList');
+            adminList.innerHTML = ''; // Clear any previous list
+
+            members.forEach(member => {
+                if (!member.innerHTML.includes('(Admin)')) { // Don't show admin in the selection
+                    let listItem = document.createElement('li');
+                    listItem.innerText = member.innerText;
+                    listItem.onclick = () => setAdmin(member);
+                    adminList.appendChild(listItem);
+                }
+            });
+
+            document.getElementById('adminSelectionModal').style.display = 'block';
+        }
+
+        // Function to set new admin
+        function setAdmin(member) {
+            // Remove current admin text
+            let currentAdmin = document.querySelector('#memberList li span');
+            if (currentAdmin) {
+                currentAdmin.remove();
+            }
+
+            // Set new admin
+            member.innerHTML += ' <span>(Admin)</span>';
+            closeAdminSelection();
+        }
+
+        // Close admin selection modal
+        function closeAdminSelection() {
+            document.getElementById('adminSelectionModal').style.display = 'none';
+        }
+
+        // Function to add items to cart
+        function addItem() {
+            let itemName = prompt("Enter item name:");
+            let price = 100; // Fixed price for simplicity (can be dynamic later)
+            if (itemName) {
+                let cart = document.getElementById("foodItemList");
+                let newItem = document.createElement("div");
+                newItem.classList.add('food-item');
+                newItem.innerHTML = `
+                <div>${itemName} - ₹${price}</div>
+                <button onclick='removeItem(this)'>Remove</button>
+            `;
+                cart.appendChild(newItem);
+                updateBill();
+            }
+        }
+
+        // Function to remove items from cart
+        function removeItem(button) {
+            button.parentElement.remove();
+            updateBill();
+        }
+
+        // Function to update the total bill and discount
+        function updateBill() {
+            let members = document.querySelectorAll('#memberList li').length;
+            let items = document.querySelectorAll('.food-item');
+            let total = 0;
+            items.forEach(item => {
+                total += 100; // Fixed price for each item
+            });
+
+            let discount = 0;
+            if (members >= 10) {
+                discount = 12;
+            } else if (members >= 5) {
+                discount = 5;
+            }
+
+            document.getElementById("totalBill").innerText = (total - (total * discount / 100)).toFixed(2);
+            document.getElementById("discount").innerText = `${discount}%`;
+        }
+
+        // Function to show payment modal
+        function showPaymentModal() {
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        // Function to select payment method
+        function selectPayment(method) {
+            alert(`Payment Method Selected: ${method}`);
+        }
+
+        // Function to choose delivery type
+        function chooseDelivery(type) {
+            alert(`Delivery Option Selected: ${type}`);
+            document.getElementById('paymentModal').style.display = 'none';
+            document.getElementById('orderSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('orderSuccess').style.display = 'none';
+            }, 3000);
+        }
+    </script>
+
+</body>
+
+</html>
